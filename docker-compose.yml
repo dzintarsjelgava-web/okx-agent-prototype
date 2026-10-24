@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: okx-agent-prototype
+    command: python -m app.main --symbol BTC-USD --periods 200 --short-window 9 --long-window 21 --initial-cash 10000 --seed 42
+    volumes:
+      - .:/app
+    working_dir: /app
