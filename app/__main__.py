@@ -1,11 +1,7 @@
 from __future__ import annotations
 
-from pathlib import Path
-
-
-def main() -> None:
-    print("OKX research automation prototype loaded")
+import uvicorn
 
 
 if __name__ == "__main__":
-    main()
+    uvicorn.run("app.api:app", host="0.0.0.0", port=8000, reload=False)

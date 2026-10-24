@@ -1,33 +1,40 @@
 # okx-agent-prototype
 
-A lightweight Python prototype for an OKX research automation trading workflow. This MVP includes:
+A Python prototype for OKX research and paper-trading workflows. This version adds a cleaner project structure and a live market-data backtesting path alongside the synthetic EMA strategy prototype.
 
-- a synthetic market ingestor that produces OHLCV bars
-- an EMA crossover research strategy
-- a paper trading manager that simulates order execution
-- Docker support for local runs
+## Features
+
+- synthetic OHLCV market data generation
+- EMA crossover strategy engine
+- paper order manager for simulating execution
+- live OKX candle fetcher via public market API
+- simple FastAPI health and backtest endpoints
+- Docker support for local execution
 
 ## Quick start
 
+### Synthetic backtest
+
 ```bash
-python -m app.main --symbol BTC-USD --periods 200 --short-window 9 --long-window 21 --initial-cash 10000 --seed 42
+python -m app.main run --symbol BTC-USDT --periods 200 --short-window 9 --long-window 21 --initial-cash 10000 --seed 42
 ```
 
-## What it does
+### Live OKX backtest
 
-1. Generates synthetic market data for a symbol.
-2. Applies an EMA crossover strategy to produce buy/sell/hold signals.
-3. Simulates a paper portfolio using the strategy.
-4. Writes the result to `output/portfolio_summary.json`.
-
-## Example output
-
-```text
-Symbol: BTC-USD
-Final portfolio value: $12345.67
-Trades executed: 5
-Results saved to output/portfolio_summary.json
+```bash
+python -m app.main live --symbol BTC-USDT --interval 1m --limit 100 --short-window 9 --long-window 21 --initial-cash 10000
 ```
+
+### Start the API
+
+```bash
+python -m app.main serve --host 0.0.0.0 --port 8000
+```
+
+Then open:
+
+- http://localhost:8000/health
+- http://localhost:8000/backtest?symbol=BTC-USDT&interval=1m&limit=100
 
 ## Docker
 
@@ -37,4 +44,4 @@ docker compose up --build
 
 ## Notes
 
-This is intentionally a prototype and does not connect to the live OKX API yet. It provides a clean starting point for deeper research automation and execution logic.
+This project is intentionally designed as a prototype. It does not yet trade live with an exchange account and should be treated as a research and simulation tool.
