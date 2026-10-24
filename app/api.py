@@ -20,6 +20,9 @@ def backtest(
     short_window: int = Query(default=9, ge=2, le=30),
     long_window: int = Query(default=21, ge=3, le=60),
     initial_cash: float = Query(default=10000.0, ge=100.0),
+    risk_per_trade: float = Query(default=0.02, ge=0.0, le=0.25),
+    max_position_pct: float = Query(default=0.25, ge=0.0, le=1.0),
+    rsi_period: int = Query(default=14, ge=2, le=50),
 ) -> dict:
     client = OKXClient()
     candles = client.fetch_candles(symbol=symbol, interval=interval, limit=limit)
@@ -28,6 +31,9 @@ def backtest(
         short_window=short_window,
         long_window=long_window,
         initial_cash=initial_cash,
+        risk_per_trade=risk_per_trade,
+        max_position_pct=max_position_pct,
+        rsi_period=rsi_period,
     )
     report["symbol"] = symbol
     report["interval"] = interval
